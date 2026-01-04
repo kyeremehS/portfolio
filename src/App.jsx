@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import {
   personalInfo,
   socialLinks,
@@ -10,7 +11,45 @@ import {
   education,
 } from "./data";
 
-const linkStyle = { color: "#1d4ed8", textDecoration: "underline" };
+// Animation variants for fade-in effect
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: "easeOut" },
+  },
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2,
+    },
+  },
+};
+
+const fadeInItem = {
+  hidden: { opacity: 0, x: -20 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.4, ease: "easeOut" },
+  },
+};
+
+// Theme colors (light mode only)
+const theme = {
+  bg: "#ffffff",
+  text: "#000000",
+  link: "#1d4ed8",
+  secondaryText: "#666666",
+};
+
+const linkStyle = { color: theme.link, textDecoration: "underline" };
 
 function App() {
   const [isVisible, setIsVisible] = useState(false);
@@ -22,8 +61,10 @@ function App() {
 
   return (
     <div
-      className={`min-h-screen bg-white text-black transition-opacity duration-1000 ${isVisible ? "opacity-100" : "opacity-0"}`}
+      className={`min-h-screen transition-all duration-500 ${isVisible ? "opacity-100" : "opacity-0"}`}
       style={{
+        backgroundColor: theme.bg,
+        color: theme.text,
         fontFamily: '"JetBrains Mono", "Courier New", Courier, monospace',
         fontSize: "14px",
         lineHeight: "1.7",
@@ -34,10 +75,16 @@ function App() {
           maxWidth: "800px",
           margin: "0 auto",
           padding: "60px 40px",
+          position: "relative",
         }}
       >
         {/* Header */}
-        <header style={{ marginBottom: "32px" }}>
+        <motion.header
+          initial="hidden"
+          animate="visible"
+          variants={fadeInUp}
+          style={{ marginBottom: "24px" }}
+        >
           <h1
             style={{
               fontSize: "18px",
@@ -47,15 +94,31 @@ function App() {
           >
             {personalInfo.name}
           </h1>
-          <p>{personalInfo.tagline}</p>
-        </header>
+          <p style={{ color: theme.secondaryText }}>{personalInfo.tagline}</p>
+        </motion.header>
 
         {/* Stints Section */}
-        <section style={{ marginBottom: "32px" }}>
+        <motion.section
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={fadeInUp}
+          style={{ marginBottom: "32px" }}
+        >
           <h2 style={{ fontSize: "16px", marginBottom: "16px" }}>Stints:</h2>
-          <ul style={{ listStyleType: "disc", paddingLeft: "24px" }}>
+          <motion.ul
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            style={{ listStyleType: "disc", paddingLeft: "24px" }}
+          >
             {stints.map((stint, index) => (
-              <li key={index} style={{ marginBottom: "6px" }}>
+              <motion.li
+                key={index}
+                variants={fadeInItem}
+                style={{ marginBottom: "6px" }}
+              >
                 {stint.role}{" "}
                 <a
                   href={stint.url}
@@ -66,13 +129,14 @@ function App() {
                   {stint.company}
                 </a>
                 ; {stint.description}
-              </li>
+              </motion.li>
             ))}
 
             {/* Selected Research as nested list */}
-            <li style={{ marginBottom: "6px" }}>
+            <motion.li variants={fadeInItem} style={{ marginBottom: "6px" }}>
               Selected Research
-              <ul
+              <motion.ul
+                variants={staggerContainer}
                 style={{
                   listStyleType: "circle",
                   paddingLeft: "24px",
@@ -80,25 +144,39 @@ function App() {
                 }}
               >
                 {research.map((item, index) => (
-                  <li key={index} style={{ marginBottom: "6px" }}>
+                  <motion.li
+                    key={index}
+                    variants={fadeInItem}
+                    style={{ marginBottom: "6px" }}
+                  >
                     {item.title} {item.prefix && item.prefix}
                     {!item.prefix && "with "}
                     <a href={item.url} style={linkStyle}>
                       {item.collaborator}
                     </a>
-                  </li>
+                  </motion.li>
                 ))}
-              </ul>
-            </li>
-          </ul>
-        </section>
+              </motion.ul>
+            </motion.li>
+          </motion.ul>
+        </motion.section>
 
         {/* Skills Section */}
-        <section style={{ marginBottom: "32px" }}>
+        <motion.section
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={fadeInUp}
+          style={{ marginBottom: "32px" }}
+        >
           <ul style={{ listStyleType: "disc", paddingLeft: "24px" }}>
             <li style={{ marginBottom: "6px" }}>
               Skills
-              <ul
+              <motion.ul
+                variants={staggerContainer}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
                 style={{
                   listStyleType: "circle",
                   paddingLeft: "24px",
@@ -106,21 +184,38 @@ function App() {
                 }}
               >
                 {skills.map((skill, index) => (
-                  <li key={index} style={{ marginBottom: "6px" }}>
-                    {skill.category}: {skill.items}
-                  </li>
+                  <motion.li
+                    key={index}
+                    variants={fadeInItem}
+                    style={{ marginBottom: "6px" }}
+                  >
+                    <span style={{ color: theme.secondaryText }}>
+                      {skill.category}:
+                    </span>{" "}
+                    {skill.items}
+                  </motion.li>
                 ))}
-              </ul>
+              </motion.ul>
             </li>
           </ul>
-        </section>
+        </motion.section>
 
         {/* Projects Section */}
-        <section style={{ marginBottom: "32px" }}>
+        <motion.section
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={fadeInUp}
+          style={{ marginBottom: "32px" }}
+        >
           <ul style={{ listStyleType: "disc", paddingLeft: "24px" }}>
             <li style={{ marginBottom: "6px" }}>
               Projects
-              <ul
+              <motion.ul
+                variants={staggerContainer}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
                 style={{
                   listStyleType: "circle",
                   paddingLeft: "24px",
@@ -128,24 +223,38 @@ function App() {
                 }}
               >
                 {projects.map((project, index) => (
-                  <li key={index} style={{ marginBottom: "6px" }}>
+                  <motion.li
+                    key={index}
+                    variants={fadeInItem}
+                    style={{ marginBottom: "6px" }}
+                  >
                     <a href={project.url} style={linkStyle}>
                       {project.name}
                     </a>{" "}
                     - {project.description}
-                  </li>
+                  </motion.li>
                 ))}
-              </ul>
+              </motion.ul>
             </li>
           </ul>
-        </section>
+        </motion.section>
 
         {/* Blog Section */}
-        <section style={{ marginBottom: "32px" }}>
+        <motion.section
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={fadeInUp}
+          style={{ marginBottom: "32px" }}
+        >
           <ul style={{ listStyleType: "disc", paddingLeft: "24px" }}>
             <li style={{ marginBottom: "6px" }}>
               Blog
-              <ul
+              <motion.ul
+                variants={staggerContainer}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
                 style={{
                   listStyleType: "circle",
                   paddingLeft: "24px",
@@ -153,19 +262,29 @@ function App() {
                 }}
               >
                 {blog.map((post, index) => (
-                  <li key={index} style={{ marginBottom: "6px" }}>
+                  <motion.li
+                    key={index}
+                    variants={fadeInItem}
+                    style={{ marginBottom: "6px" }}
+                  >
                     <a href={post.url} style={linkStyle}>
                       {post.title}
                     </a>
-                  </li>
+                  </motion.li>
                 ))}
-              </ul>
+              </motion.ul>
             </li>
           </ul>
-        </section>
+        </motion.section>
 
         {/* Education Section */}
-        <section style={{ marginBottom: "32px" }}>
+        <motion.section
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={fadeInUp}
+          style={{ marginBottom: "32px" }}
+        >
           <ul style={{ listStyleType: "disc", paddingLeft: "24px" }}>
             <li style={{ marginBottom: "6px" }}>
               Education
@@ -178,57 +297,89 @@ function App() {
                 >
                   {education.institution}
                 </a>
-                <p style={{ marginTop: "2px" }}>{education.degree}</p>
-                <p>{education.period}</p>
+                <p style={{ marginTop: "2px", color: theme.secondaryText }}>
+                  {education.degree}
+                </p>
+                <p style={{ color: theme.secondaryText }}>{education.period}</p>
               </div>
             </li>
           </ul>
-        </section>
+        </motion.section>
 
         {/* Personal Section */}
-        <section style={{ marginBottom: "8px" }}>
+        <motion.section
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={fadeInUp}
+          style={{ marginBottom: "8px" }}
+        >
           <p>{personalInfo.bio}</p>
-        </section>
+        </motion.section>
 
         {/* Current Work */}
-        <section style={{ marginBottom: "32px" }}>
-          <p>{personalInfo.currentWork}</p>
-        </section>
+        <motion.section
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={fadeInUp}
+          style={{ marginBottom: "32px" }}
+        >
+          <p style={{ color: theme.secondaryText }}>
+            {personalInfo.currentWork}
+          </p>
+        </motion.section>
 
         {/* Footer/Contact */}
-        <footer>
+        <motion.footer
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={fadeInUp}
+        >
           <div style={{ marginBottom: "4px" }}>
-            <a
+            <motion.a
               href={socialLinks.github}
               target="_blank"
               rel="noopener noreferrer"
               style={linkStyle}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               github
-            </a>{" "}
-            <a
+            </motion.a>{" "}
+            <motion.a
               href={socialLinks.linkedin}
               target="_blank"
               rel="noopener noreferrer"
               style={linkStyle}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               linkedin
-            </a>{" "}
-            <a
+            </motion.a>{" "}
+            <motion.a
               href={socialLinks.twitter}
               target="_blank"
               rel="noopener noreferrer"
               style={linkStyle}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               twitter
-            </a>
+            </motion.a>
           </div>
           <div>
-            <a href={`mailto:${personalInfo.email}`} style={linkStyle}>
+            <motion.a
+              href={`mailto:${personalInfo.email}`}
+              style={linkStyle}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
               {personalInfo.email}
-            </a>
+            </motion.a>
           </div>
-        </footer>
+        </motion.footer>
       </div>
     </div>
   );
