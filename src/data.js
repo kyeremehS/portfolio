@@ -18,25 +18,25 @@ export const stints = [
   {
     role: "research engineer",
     company: "@gigsama",
-    url: "https://giqsama.com",
+    url: "https://gigsama.com",
     description: "applied ml research",
   },
   {
     role: "campus lead",
     company: "@techstripped africa",
-    url: "https://techstripped.africa",
+    url: "https://techstripped.com/",
     description: "leading tech education initiatives in ghana",
   },
   {
     role: "data science trainee",
     company: "@ghana tech lab",
-    url: "#",
+    url: "https://www.ghanatechlab.com/",
     description: "apprenticeship program",
   },
   {
     role: "data analyst intern",
-    company: "@noontu technologies",
-    url: "#",
+    company: "@npontu technologies",
+    url: "https://npontu.com/",
     description: "data analysis and insights",
   },
 ];
@@ -69,7 +69,7 @@ export const skills = [
   {
     category: "frameworks & tools",
     items:
-      "PyTorch, Sklearn, Machine Learning, Pandas, Seaborn, Matplotlib, Jupyter Notebooks, Git, AWS, PySpark, TRL, Unsloth, Hugging Face",
+      "PyTorch, Sklearn, Machine Learning, Pandas, Seaborn, Matplotlib, Numpy, Jupyter Notebooks, Git, TRL, Unsloth, Hugging Face",
   },
   {
     category: "data analytics",
@@ -81,19 +81,19 @@ export const skills = [
 export const projects = [
   {
     name: "End-to-End Text Summarization Pipeline",
-    url: "#",
+    url: "https://github.com/kyeremehS/end-to-end-text-summarization",
     description:
       "Built text summarization models using Hugging Face Transformers and PyTorch. Conducted feature engineering with NLTK and spaCy. Deployed on AWS (Lambda & EC2) with Hugging Face Inference API.",
   },
   {
     name: "LLM Fine-tuning with TRL & Unsloth",
-    url: "#",
+    url: "https://github.com/kyeremehS/finetuning-snippet",
     description:
       "Fine-tuned large language models using TRL and Unsloth for efficient training. Applied techniques like LoRA and QLoRA for parameter-efficient fine-tuning.",
   },
   {
     name: "911 Call Data Analysis and Visualization",
-    url: "#",
+    url: "https://github.com/kyeremehS/911-Calls-Project",
     description:
       "Analyzed 911 call data to uncover emergency response insights. Cleaned data with Pandas and created visualizations with Matplotlib and Seaborn for stakeholder decision-making.",
   },
